@@ -42,12 +42,12 @@ ifeq ($(PLATFORM),MSP432)
 	LD = arm-none-eabi-ld
 	LDFLAGS = -Wl -Map=$(TARGET).map -T $(LINKER_FILE)
 	CFLAGES = -mcpu=$(CPU) -m$(ARCH) -march=armv7e-m -mfloat-abi=hard  --specs=$(SPECS) -mfpu=fpv4-sp-d16  -Wall -g -O0 -std=c99
-	CPPFLAGS = -DMSP432 
+	CPPFLAGS = -DMSP432 -DVERBOSE 
 else
 	CC = x86_64-linux-gnu-gcc
 	LD = x86_64-linux-gnu-ld
 	CFLAGS = -Wall -g -O0 -std=c99
-	CPPFLAGS = -DHOST
+	CPPFLAGS = -DHOST -DVERBOSE
 
 endif
 

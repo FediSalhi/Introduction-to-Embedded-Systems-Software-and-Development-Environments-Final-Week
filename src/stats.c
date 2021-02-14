@@ -24,7 +24,8 @@
 
 
 #include <stdio.h>
-#include "stats.h"
+#include "../include/common/stats.h"
+#include "../include/common/platform.h"
 
 /* Size of the Data Set */
 #define SIZE (40)
@@ -80,9 +81,11 @@ void print_array(unsigned char* data_array_u8, unsigned int length_u32) {
 
 	unsigned int i;
 
-	for(i=0; i<length_u32; i++) {
-		printf("Element %u = %u\n", i, data_array_u8[i]);
-	}
+	#ifdef VERBOSE
+		for(i=0; i<length_u32; i++) {
+			PRINTF("Element %u = %u\n", i, data_array_u8[i]);
+		}
+	#endif
 }
 
 void sort_array(unsigned char* data_array_u8, unsigned int length_u32) {

@@ -20,7 +20,10 @@
  * @date April 1 2017
  *
  */
-#include "memory.h"
+#include "../include/common/memory.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /***********************************************************
  Function Definitions
@@ -47,4 +50,104 @@ void set_all(char * ptr, char value, unsigned int size){
 void clear_all(char * ptr, unsigned int size){
   set_all(ptr, 0, size);
 }
+
+uint8_t* my_memmove(uint8_t *src, uint8_t *dst, size_t length) {
+  
+	unsigned int overlap = 0;
+	int i;
+	/* testing for overlap */
+	if (dst >= src && dst <= (src + length))
+	{
+		overlap = 1;
+	}
+
+	if (overlap)
+	{
+		/* we need a tmp uint8 array to save values in [src src+length] memory chunk */
+		uint8_t tmp[length];
+		for(i=0; i<length; i++)
+		{
+			*(tmp+i) = *(src+i);
+		}
+		/* we can now transfer values from tmp to dst */
+		for(i=0; i<length; i++)
+		{
+			*(dst+i) = *(tmp+i);
+		}
+	}
+	else 
+	{
+		/* there is no overlap, so we dont care about any missing values */
+                for(i=0; i<length; i++)
+                {
+                        *(dst+i) = *(src+i);
+                }
+	}
+       return dst;	
+}
+
+uint8_t* my_memcopy(uint8_t *src, uint8_t *dst, size_t length)
+{
+	/* no overlap test, the behaviour is undefined if there is overlap of source and destination */
+	int i = 0;
+	for(i=0; i<length; i++)
+	{
+		*(dst+i) = *(src+i);
+	}
+	return dst;
+}
+
+uint8_t* my_memset(uint8_t *src, size_t length, uint8_t value)
+{
+	int i = 0;
+	for(i=0; i<length; i++)
+        {
+                *(src+i) = value;
+        }
+        return src;
+}
+
+uint8_t* my_memzero(uint8_t *src, size_t length)
+{
+        int i = 0;
+        for(i=0; i<length; i++)
+        {
+                *(src+i) = 0;
+        }
+        return src;
+}
+
+uint8_t* my_reverse(uint8_t *src, size_t length)
+{
+	int i = 0;
+	uint8_t tmp[length];
+	for(i=0; i<length; i++)
+	{
+		*(tmp+length-i) = *(src+i);
+	}
+	for(i=0; i<length; i++)
+	{
+		*(src+i) = *(tmp+i);
+	}
+	return src;
+}
+
+int32_t * reverse_words(size_t length)
+{
+	int32_t * ptr = (int32_t*) malloc(length * sizeof(int32_t));
+	if(ptr)
+	{
+		return ptr;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+void free_words(int32_t *src)
+{
+	free(src);
+}
+
 
